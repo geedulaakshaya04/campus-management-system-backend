@@ -41,10 +41,11 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.count() > 0) {
-            log.info("Database already seeded with demo records.");
-            return;
-        }
+        try {
+            if (userRepository.count() > 0) {
+                log.info("Database already seeded with demo records.");
+                return;
+            }
 
         log.info("Seeding initial demo data for all 5 roles...");
 
@@ -208,5 +209,8 @@ public class DataSeeder implements CommandLineRunner {
         assignmentRepository.saveAll(List.of(a1, a2));
 
         log.info("Demo data seeding completed successfully!");
+        } catch (Exception ex) {
+            log.warn("Notice: Data seeding skipped or encountered non-fatal error: {}", ex.getMessage());
+        }
     }
 }
